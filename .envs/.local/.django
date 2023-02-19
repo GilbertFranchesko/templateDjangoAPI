@@ -1,0 +1,3 @@
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+SECRET_KEY=e6v&3g6xn!&fu62!nn^tm*7ocp&m0l*lb766*lis2po4z0*iq)

@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os, sys
+import environ
+
 from pathlib import Path
 
+
+env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +32,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e6v&3g6xn!&fu62!nn^tm*7ocp&m0l*lb766*lis2po4z0*iq)'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_spectacular',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -91,6 +96,8 @@ TEMPLATES = [
 # Rest Framework
 
 REST_FRAMEWORK = {
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework.authentication.TokenAuthentication',
@@ -120,11 +127,11 @@ WSGI_APPLICATION = 'forans.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'forans',
-        'USER': 'vasya',
-        'PASSWORD': 'vasya_pupkin123321',
-        'HOST': '127.0.0.1',
-        'PORT': ''
+        'NAME': env("POSTGRES_DB"),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT')
 
     }
 }
@@ -147,6 +154,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
 
 
 # Internationalization
